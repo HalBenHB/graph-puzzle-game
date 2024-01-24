@@ -1,0 +1,4 @@
+C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/cmake-build-debug/CMakeFiles/graph-puzzle-game.dir
+C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/cmake-build-debug/CMakeFiles/graph-puzzle-game-TURKISH.dir
+C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
