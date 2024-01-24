@@ -9,9 +9,7 @@
 
 using namespace std;
 
-int main(){
-
-
+int puzzle1(){
     vector<string> words3Letters;
     vector<string> words4Letters;
     vector<string> words5Letters;
@@ -103,6 +101,10 @@ int main(){
         testResult=extraGraphs[i].DijkstraSearch(word1,word2);
         cout<<"||"<<testResult<<endl;
     }
+    return 0;
+}
 
+int main(){
+    puzzle1();
     return 0; // Return success code
 }

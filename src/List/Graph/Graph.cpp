@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <cstdlib>
 #include "Graph.h"
 #include "../../Array/DisjointSet.h"
 #include "../Queue.h"
@@ -172,35 +173,6 @@ namespace list {
         }
     }
 
-    void Graph::addFromVector(const std::vector<std::string>& vector1) {
-
-        for (int i = 0; i < vertexCount; ++i) {
-            edges[i].setWord(vector1[i]);
-            for (int j = 0; j < i; ++j) {
-                if (oneDifferenceCheck(vector1[j],vector1[i])){
-                    addEdge(i, j);
-                    addEdge(j, i);
-                }
-            }
-        }
-    }
-
-    bool Graph::oneDifferenceCheck(std::string string1, std::string string2){
-        int differences = 0;
-        // Compare each character
-        for (size_t i = 0; i < string1.length(); ++i) {
-            if (string1[i] != string2[i]) {
-                // Increment the differences count
-                ++differences;
-                // If more than one difference is found, return false
-                if (differences > 1) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     EdgeList Graph::getEdgeList(int n) {
         return edges[n];
     }
@@ -322,4 +294,94 @@ namespace list {
 
         return path;
     }
+
+
+    void Graph::addFromVector(const std::vector<std::string>& vector1) {
+        for (int i = 0; i < vertexCount; ++i) {
+            edges[i].setWord(vector1[i]);
+            for (int j = 0; j < i; ++j) {
+                if (oneDifferenceCheck(vector1[j],vector1[i])){
+                    addEdge(i, j);
+                    addEdge(j, i);
+                }
+            }
+        }
+    }
+
+    bool Graph::oneDifferenceCheck(std::string string1, std::string string2){
+        int differences = 0;
+        // Compare each character
+        for (size_t i = 0; i < string1.length(); ++i) {
+            if (string1[i] != string2[i]) {
+                // Increment the differences count
+                ++differences;
+                // If more than one difference is found, return false
+                if (differences > 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    void Graph::addFromVector2(const vector<std::string> &vector1) {
+        for (int i = 0; i < vertexCount; ++i) {
+            edges[i].setWord(vector1[i]);
+            for (int j = 0; j < i; ++j) {
+                if (oneDifferenceCheck2(vector1[j],vector1[i])){
+                    addEdge(i, j);
+                    addEdge(j, i);
+                }
+            }
+        }
+    }
+
+
+    bool Graph::oneDifferenceCheck2(std::string string1, std::string string2){
+        int length_difference=string1.length()- string2.length();
+        length_difference=abs(length_difference);
+        if(length_difference>1){
+            return false;
+        }
+        else if (length_difference==1){
+            int diffCount = 0;
+            // Iterate through the characters of both strings
+            for (std::size_t i = 0, j = 0; i < string1.length() && j < string2.length(); ++i, ++j) {
+                if (string1[i] != string2[j]) {
+                    // Increment the difference count
+                    ++diffCount;
+
+                    // If there is more than one difference, return false
+                    if (diffCount > 1) {
+                        return false;
+                    }
+
+                    // If the lengths are different, adjust the index for the longer string
+                    if (string1.length() > string2.length()) {
+                        --j;
+                    } else if (string1.length() < string2.length()) {
+                        --i;
+                    }
+                }
+            }
+            return true;
+        }
+        else{
+            int diffCount = 0;
+            // Compare each character
+            for (size_t i = 0; i < string1.length(); ++i) {
+                if (string1[i] != string2[i]) {
+                    // Increment the differences count
+                    ++diffCount;
+                    // If more than one difference is found, return false
+                    if (diffCount > 1) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+
 }

@@ -29,13 +29,14 @@ namespace list {
         void addFromVector(const std::vector<std::string>& vector1);
         std::string BFSearch(std::string word1,std::string word2);
         std::string DijkstraSearch(std::string word1,std::string word2);
+        void addFromVector2(const std::vector<std::string>& vector1);
 
     protected:
         void depthFirstSearch(bool* visited, int fromNode) override;
         void breadthFirstSearch(bool* visited, int startNode) override;
         Edge* edgeList(int& edgeCount) override;
-
         static bool oneDifferenceCheck(std::string string1, std::string string2);
+        static bool oneDifferenceCheck2(std::string string1, std::string string2);
     };
 
 }

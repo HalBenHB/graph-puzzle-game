@@ -9,13 +9,11 @@
 
 using namespace std;
 
-int main(){
 
-
+int puzzle1(){
     vector<string> words3Letters;
     vector<string> words4Letters;
     vector<string> words5Letters;
-
 
     // Open the file
     ifstream dictionaryFile("../english-dictionary.txt");
@@ -23,7 +21,6 @@ int main(){
         cerr << "Error opening the file!" << endl;
         return 1;
     }
-
 
     int no_3letters=0,no_4letters=0,no_5letters=0;
     streampos initialPos = dictionaryFile.tellg();
@@ -143,6 +140,61 @@ int main(){
         testResult=extraGraphs[i].DijkstraSearch(word1,word2);
         cout<<"||"<<testResult<<endl;
     }
+
+    return 0;
+}
+
+int puzzle2(){
+    vector<string> words;
+
+    // Open the file
+    ifstream dictionaryFile("../english-dictionary.txt");
+    if (!dictionaryFile.is_open()) {
+        cerr << "Error opening the file!" << endl;
+        return 1;
+    }
+
+    int no_of_words=0;
+    streampos initialPos = dictionaryFile.tellg();
+    string line;
+    while (getline(dictionaryFile, line)) {
+        // Process each word in the line
+        istringstream iss(line);
+        string word;
+        while (iss >> word) {
+            words.push_back(word);
+            no_of_words++;
+        }
+    }
+    dictionaryFile.close();
+    cout<<"Words are read";
+    list::Graph words_graph = list::Graph(no_of_words);
+    words_graph.addFromVector2(words);
+    cout<<"Words are graphed";
+
+    int testCases=3;
+    string testWords1[]={"Please ","cat","kick"};
+    string testWords2[]={"adjust","score","grammar"};
+
+    for (int i = 0; i < testCases; ++i) {
+        string testResult, word1, word2;
+        word1=testWords1[i];
+        word2=testWords2[i];
+        cout<<"-------------------------"<<endl;
+        cout << "||Test Case: Adding Edges with One-Letter Difference" << endl;
+        cout << "||Shortest Path from '"<< word1 <<"' to '"<<word2<<"' by BFS:" << endl;
+        testResult=words_graph.BFSearch(word1,word2);
+        cout<<"||"<<testResult<<"||"<<endl;
+        cout << "||Shortest Path from '"<< word1 <<"' to '"<<word2<<"' by Dijkstra:" << endl;
+        testResult=words_graph.DijkstraSearch(word1,word2);
+        cout<<"||"<<testResult<<endl;
+    }
+    return 0;
+}
+
+int main(){
+
+    puzzle2();
 
     return 0; // Return success code
 }
