@@ -11,6 +11,8 @@
 
 class AbstractGraph {
 protected:
+    AbstractGraph();
+
     int vertexCount;
     virtual void depthFirstSearch(bool* visited, int fromNode) = 0;
     virtual void breadthFirstSearch(bool* visited, int startNode) = 0;

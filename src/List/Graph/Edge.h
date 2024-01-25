@@ -24,23 +24,32 @@ public:
     int getTo() const;
     int getWeight() const;
 
-    // Serialization
+// Serialization
     nlohmann::json toJson() const {
-        return {
-                {"from", from},
-                {"to", to},
-                {"weight", weight}
-                // Add more fields as needed
-        };
+        nlohmann::json j;
+        j["from"] = from;
+        j["to"] = to;
+        j["weight"] = weight;
+        // Assuming next is a pointer to another Edge
+        if (next) {
+            j["next"] = next->toJson();  // Recursively serialize next
+        }
+        return j;
     }
 
-    // Deserialization
+// Deserialization
     static Edge fromJson(const nlohmann::json& j) {
-        Edge edge;
-        edge.from = j.at("from").get<int>();
-        edge.to = j.at("to").get<int>();
-        edge.weight = j.at("weight").get<int>();
-        // Retrieve other fields as needed
+        int from = j["from"].get<int>();
+        int to = j["to"].get<int>();
+        int weight = j["weight"].get<int>();
+
+        Edge edge(from, to, weight);
+
+        // Check if "next" key exists in JSON
+        if (j.find("next") != j.end()) {
+            *edge.next = Edge::fromJson(j["next"]);  // Recursively deserialize next
+        }
+
         return edge;
     }
 };

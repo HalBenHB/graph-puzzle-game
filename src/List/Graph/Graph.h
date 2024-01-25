@@ -15,7 +15,7 @@ namespace list {
 
     class Graph : public AbstractGraph{
     private:
-        EdgeList *edges;
+        EdgeList *edgeLists;
     public:
         explicit Graph(int vertexCount);
         EdgeList getEdgeList(int n);
@@ -35,7 +35,7 @@ namespace list {
         nlohmann::json toJson() const {
             nlohmann::json edgesJson = nlohmann::json::array();
             for (int i = 0; i < vertexCount; i++) {
-                edgesJson.push_back(edges[i].toJson());
+                edgesJson.push_back(edgeLists[i].toJson());
             }
             return {
                     {"vertexCount", vertexCount},
@@ -45,12 +45,25 @@ namespace list {
 
         // Deserialization
         static Graph fromJson(const nlohmann::json& j) {
-            Graph graph(j.at("vertexCount").get<int>());
-            for (int i = 0; i < graph.vertexCount; i++) {
-                graph.edges[i] = EdgeList::fromJson(j.at("edges").at(i));
+            list::Graph graph = Graph(j.at("vertexCount"));
+            // Deserialize the edges first
+
+            for (int i = 0; i < j.at("vertexCount"); i++) {
+                graph.edgeLists[i] = EdgeList();
             }
+
+            int i=0;
+            // Assuming 'edges' is an array of vertices, each with an 'edges' array
+            for (const auto& edgeList : j.at("edges")) {
+                // Deserialize the 'edges' array for each vertex
+                graph.edgeLists[i]=EdgeList::fromJson(edgeList);
+                i++;
+            }
+
             return graph;
         };
+
+        Graph();
 
     protected:
         void depthFirstSearch(bool* visited, int fromNode) override;

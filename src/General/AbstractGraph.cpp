@@ -63,3 +63,7 @@ void AbstractGraph::kruskal() {
         i++;
     }
 }
+
+AbstractGraph::AbstractGraph() {
+
+}

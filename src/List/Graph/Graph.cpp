@@ -12,24 +12,24 @@
 namespace list {
 
     Graph::Graph(int _vertexCount) : AbstractGraph(_vertexCount){
-        edges = new EdgeList[vertexCount];
+        edgeLists = new EdgeList[vertexCount];
         for (int i = 0; i < vertexCount; i++) {
-            edges[i] = EdgeList();
+            edgeLists[i] = EdgeList();
         }
     }
 
     void Graph::addEdge(int from, int to) {
         Edge* edge = new Edge(from, to, 1);
-        edges[from].insert(edge);
+        edgeLists[from].insert(edge);
     }
 
     void Graph::addEdge(int from, int to, int weight) {
         Edge* edge = new Edge(from, to, weight);
-        edges[from].insert(edge);
+        edgeLists[from].insert(edge);
     }
 
     Graph::~Graph() {
-        delete[] edges;
+        delete[] edgeLists;
     }
 
     void Graph::connectedComponentsDisjointSet() {
@@ -37,7 +37,7 @@ namespace list {
         int toNode;
         DisjointSet sets = DisjointSet(vertexCount);
         for (int fromNode = 0; fromNode < vertexCount; fromNode++){
-            edge = edges[fromNode].getHead();
+            edge = edgeLists[fromNode].getHead();
             while (edge != nullptr){
                 toNode = edge->getTo();
                 if (sets.findSetRecursive(fromNode) != sets.findSetRecursive(toNode)){
@@ -51,7 +51,7 @@ namespace list {
     void Graph::depthFirstSearch(bool *visited, int fromNode) {
         Edge* edge;
         int toNode;
-        edge = edges[fromNode].getHead();
+        edge = edgeLists[fromNode].getHead();
         while (edge != nullptr){
             toNode = edge->getTo();
             if (!visited[toNode]){
@@ -69,7 +69,7 @@ namespace list {
         queue.enqueue(new Node(startNode));
         while (!queue.isEmpty()){
             fromNode = queue.dequeue()->getData();
-            edge = edges[fromNode].getHead();
+            edge = edgeLists[fromNode].getHead();
             while (edge != nullptr) {
                 toNode = edge->getTo();
                 if (!visited[toNode]){
@@ -86,7 +86,7 @@ namespace list {
         Path* shortestPaths = initializePaths(source);
         for (int i = 0; i < vertexCount - 1; i++){
             for (int fromNode = 0; fromNode < vertexCount; fromNode++){
-                edge = edges[fromNode].getHead();
+                edge = edgeLists[fromNode].getHead();
                 while (edge != nullptr){
                     int toNode = edge->getTo();
                     int newDistance = shortestPaths[fromNode].getDistance() + edge->getWeight();
@@ -111,7 +111,7 @@ namespace list {
         while (!heap.isEmpty()){
             HeapNode node = heap.deleteTop();
             int fromNode = node.getName();
-            edge = edges[fromNode].getHead();
+            edge = edgeLists[fromNode].getHead();
             while (edge != nullptr){
                 int toNode = edge->getTo();
                 int newDistance = shortestPaths[fromNode].getDistance() + edge->getWeight();
@@ -131,7 +131,7 @@ namespace list {
         Edge* list;
         edgeCount = 0;
         for (int i = 0; i < vertexCount; i++){
-            Edge* edge = edges[i].getHead();
+            Edge* edge = edgeLists[i].getHead();
             while (edge != nullptr){
                 edgeCount++;
                 edge = edge->getNext();
@@ -140,7 +140,7 @@ namespace list {
         list = new Edge[edgeCount];
         int index = 0;
         for (int i = 0; i < vertexCount; i++){
-            Edge* edge = edges[i].getHead();
+            Edge* edge = edgeLists[i].getHead();
             while (edge != nullptr){
                 list[index] = Edge(edge->getFrom(), edge->getTo(), edge->getWeight());
                 index++;
@@ -159,7 +159,7 @@ namespace list {
         while (!heap.isEmpty()){
             HeapNode node = heap.deleteTop();
             int fromNode = node.getName();
-            Edge* edge = edges[fromNode].getHead();
+            Edge* edge = edgeLists[fromNode].getHead();
             while (edge != nullptr){
                 int toNode = edge->getTo();
                 if (paths[toNode].getDistance() > edge->getWeight()){
@@ -174,13 +174,13 @@ namespace list {
     }
 
     EdgeList Graph::getEdgeList(int n) {
-        return edges[n];
+        return edgeLists[n];
     }
 
     std::string Graph::BFSearch(std::string word1,std::string word2) {
         int startNode=-1;
         for (int i = 0; i < vertexCount; ++i) {
-            if (edges[i].getWord()==word1){
+            if (edgeLists[i].getWord() == word1){
                 startNode=i;
                 break;
             }
@@ -207,18 +207,18 @@ namespace list {
         string path;
         while (!queue.isEmpty()){
             fromNode = queue.dequeue()->getData();
-            edge = edges[fromNode].getHead();
-            word3 = edges[fromNode].getWord();
+            edge = edgeLists[fromNode].getHead();
+            word3 = edgeLists[fromNode].getWord();
 
             if (word3==word2){
                 for (int i=fromNode;fromNode>=0;fromNode=prevs[fromNode]) {
                     if(path==""){
-                        path = edges[fromNode].getWord();
+                        path = edgeLists[fromNode].getWord();
                     }
                     else{
-                        path = edges[fromNode].getWord() + "->" + path;
+                        path = edgeLists[fromNode].getWord() + "->" + path;
                     }
-                    if (edges[fromNode].getWord()==word1){
+                    if (edgeLists[fromNode].getWord() == word1){
                         break;
                     }
                 }
@@ -242,7 +242,7 @@ namespace list {
         Edge* edge;
         int source=-1;
         for (int i = 0; i < vertexCount; ++i) {
-            if (edges[i].getWord()==word1){
+            if (edgeLists[i].getWord() == word1){
                 source=i;
                 break;
             }
@@ -261,7 +261,7 @@ namespace list {
         while (!heap.isEmpty()){
             HeapNode node = heap.deleteTop();
             int fromNode = node.getName();
-            edge = edges[fromNode].getHead();
+            edge = edgeLists[fromNode].getHead();
 
             while (edge != nullptr){
                 int toNode = edge->getTo();
@@ -278,7 +278,7 @@ namespace list {
 
         int result;
         for (int i = 0; i < vertexCount; ++i) {
-            if (edges[i].getWord()==word2){
+            if (edgeLists[i].getWord() == word2){
                 result=i;
                 break;
             }
@@ -287,7 +287,7 @@ namespace list {
         string path;
         path=""+word2;
         for (int i = shortestPaths[result].getPrevious();i>0 ; i=shortestPaths[i].getPrevious()) {
-            path=edges[i].getWord() + "->" + path;
+            path= edgeLists[i].getWord() + "->" + path;
         }
 
 //        cout<<path<<endl;
@@ -298,7 +298,7 @@ namespace list {
 
     void Graph::addFromVector(const std::vector<std::string>& vector1) {
         for (int i = 0; i < vertexCount; ++i) {
-            edges[i].setWord(vector1[i]);
+            edgeLists[i].setWord(vector1[i]);
             for (int j = 0; j < i; ++j) {
                 if (oneDifferenceCheck(vector1[j],vector1[i])){
                     addEdge(i, j);
@@ -326,7 +326,7 @@ namespace list {
 
     void Graph::addFromVector2(const vector<std::string> &vector1) {
         for (int i = 0; i < vertexCount; ++i) {
-            edges[i].setWord(vector1[i]);
+            edgeLists[i].setWord(vector1[i]);
             for (int j = 0; j < i; ++j) {
                 if (oneDifferenceCheck2(vector1[j],vector1[i])){
                     addEdge(i, j);
@@ -381,6 +381,10 @@ namespace list {
             }
             return true;
         }
+    }
+
+    Graph::Graph(): AbstractGraph() {
+
     }
 
 

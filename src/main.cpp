@@ -9,6 +9,50 @@
 
 using namespace std;
 
+void serializeGraph(const list::Graph& graph){
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::cout << "Current Working Directory: " << currentPath << std::endl;
+
+    // Rest of your code
+    // Serialize the graph to a JSON string
+    nlohmann::json serializedGraph = graph.toJson();
+    std::string jsonString = serializedGraph.dump();
+    //std::cout << "Serialized Graph:\n" << jsonString << std::endl;
+
+    // Save the serialized graph to a file
+    std::ofstream outputFile("../serialized_graph.json");
+    if (outputFile.is_open()) {
+        outputFile << jsonString;
+        outputFile.close();
+        std::cout << "Serialized Graph saved to file: serialized_graph.json" << std::endl;
+    } else {
+        std::cerr << "Unable to open the file for writing." << std::endl;
+    }
+}
+
+
+list::Graph deserializeGraph(std::string stringPath){
+    std::ifstream inputFile(stringPath);
+    if (!inputFile.is_open()) {
+        std::cerr << "Unable to open the file for reading." << std::endl;
+        return list::Graph(0);
+    } else {
+        nlohmann::json serializedGraph;
+        inputFile >> serializedGraph;
+        inputFile.close();
+
+        // Deserialize the graph from the JSON object
+        cout<<serializedGraph.at("vertexCount");
+
+        list::Graph deserializedGraph = list::Graph::fromJson(serializedGraph);
+
+        // Use the deserializedGraph as needed
+        // ...
+        std::cout << "Graph deserialized successfully." << std::endl;
+        return deserializedGraph;
+    }
+}
+
 
 int puzzle1(){
     vector<string> words3Letters;
@@ -101,6 +145,8 @@ int puzzle1(){
     letter_4s.addFromVector(words4Letters);
     letter_5s.addFromVector(words5Letters);
 
+    serializeGraph(letter_5s);
+
 
     int testCases=3;
     string testWords1[]={"cat","dark","stone"};
@@ -172,27 +218,7 @@ int puzzle2(){
     words_graph.addFromVector2(words);
     cout<<"Words are graphed"<<endl;
 
-    std::filesystem::path currentPath = std::filesystem::current_path();
-    std::cout << "Current Working Directory: " << currentPath << std::endl;
-
-    // Rest of your code
-    // Serialize the graph to a JSON string
-    nlohmann::json serializedGraph = words_graph.toJson();
-    std::string jsonString = serializedGraph.dump();
-    //std::cout << "Serialized Graph:\n" << jsonString << std::endl;
-
-    // Save the serialized graph to a file
-    std::ofstream outputFile("../serialized_graph.json");
-    if (outputFile.is_open()) {
-        outputFile << jsonString;
-        outputFile.close();
-        std::cout << "Serialized Graph saved to file: serialized_graph.json" << std::endl;
-    } else {
-        std::cerr << "Unable to open the file for writing." << std::endl;
-    }
-
-
-
+    serializeGraph(words_graph);
 
     int testCases=3;
     string testWords1[]={"Please ","cat","kick"};
@@ -215,9 +241,11 @@ int puzzle2(){
     return 0;
 }
 
+
 int main(){
 
-    puzzle2();
+
+    puzzle1();
 
     return 0; // Return success code
 }
