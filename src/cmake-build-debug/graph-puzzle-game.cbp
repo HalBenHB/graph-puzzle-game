@@ -327,6 +327,12 @@
 		<Unit filename="C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/mainTR.cpp">
 			<Option target="graph-puzzle-game-TURKISH"/>
 		</Unit>
+		<Unit filename="C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/nlohmann/json.hpp">
+			<Option target="graph-puzzle-game"/>
+		</Unit>
+		<Unit filename="C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/nlohmann/json_fwd.hpp">
+			<Option target="graph-puzzle-game"/>
+		</Unit>
 		<Unit filename="C:/Users/Halil/Documents/GitHub/graph-puzzle-game/src/turkish-dictionary.txt">
 			<Option target="graph-puzzle-game-TURKISH"/>
 		</Unit>

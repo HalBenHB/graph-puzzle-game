@@ -167,10 +167,32 @@ int puzzle2(){
         }
     }
     dictionaryFile.close();
-    cout<<"Words are read";
+    cout<<"Words are read"<<endl;
     list::Graph words_graph = list::Graph(no_of_words);
     words_graph.addFromVector2(words);
-    cout<<"Words are graphed";
+    cout<<"Words are graphed"<<endl;
+
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::cout << "Current Working Directory: " << currentPath << std::endl;
+
+    // Rest of your code
+    // Serialize the graph to a JSON string
+    nlohmann::json serializedGraph = words_graph.toJson();
+    std::string jsonString = serializedGraph.dump();
+    //std::cout << "Serialized Graph:\n" << jsonString << std::endl;
+
+    // Save the serialized graph to a file
+    std::ofstream outputFile("../serialized_graph.json");
+    if (outputFile.is_open()) {
+        outputFile << jsonString;
+        outputFile.close();
+        std::cout << "Serialized Graph saved to file: serialized_graph.json" << std::endl;
+    } else {
+        std::cerr << "Unable to open the file for writing." << std::endl;
+    }
+
+
+
 
     int testCases=3;
     string testWords1[]={"Please ","cat","kick"};
@@ -189,6 +211,7 @@ int puzzle2(){
         testResult=words_graph.DijkstraSearch(word1,word2);
         cout<<"||"<<testResult<<endl;
     }
+
     return 0;
 }
 

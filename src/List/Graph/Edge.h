@@ -7,13 +7,13 @@
 
 
 #include <string>
+#include "../../nlohmann/json.hpp"
 
 class Edge {
 private:
     int from;
     int to;
     int weight;
-    std::string word;
     Edge* next;
 public:
     Edge();
@@ -23,8 +23,26 @@ public:
     int getFrom() const;
     int getTo() const;
     int getWeight() const;
-    std::string getWord() const;
-    void setWord(std::string word1);
+
+    // Serialization
+    nlohmann::json toJson() const {
+        return {
+                {"from", from},
+                {"to", to},
+                {"weight", weight}
+                // Add more fields as needed
+        };
+    }
+
+    // Deserialization
+    static Edge fromJson(const nlohmann::json& j) {
+        Edge edge;
+        edge.from = j.at("from").get<int>();
+        edge.to = j.at("to").get<int>();
+        edge.weight = j.at("weight").get<int>();
+        // Retrieve other fields as needed
+        return edge;
+    }
 };
 
 

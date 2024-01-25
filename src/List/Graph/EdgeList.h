@@ -7,6 +7,8 @@
 
 
 #include "Edge.h"
+#include "../../nlohmann/json.hpp"
+
 
 class EdgeList {
 private:
@@ -22,6 +24,34 @@ public:
     Edge* search(int to) const;
     void insert(Edge* newEdge);
     Edge* getHead();
+
+    // Serialization
+    nlohmann::json toJson() const {
+        nlohmann::json edgesJson = nlohmann::json::array();
+        Edge* current = head;
+        while (current != nullptr) {
+            edgesJson.push_back(current->toJson());
+            current = current->getNext();
+        }
+        return {
+                {"edges", edgesJson},
+                {"word", word}
+                // Add more fields as needed
+        };
+    }
+
+    // Deserialization
+    static EdgeList fromJson(const nlohmann::json& j) {
+        EdgeList edgeList;
+        for (const auto& edgeJson : j.at("edges")) {
+            Edge edge = Edge::fromJson(edgeJson);
+            // Add the edge to the edge list
+            // (You'll need to implement a method to add an edge to the list)
+        }
+        edgeList.word = j.at("word").get<std::string>();
+        // Retrieve other fields as needed
+        return edgeList;
+    }
 };
 
 
