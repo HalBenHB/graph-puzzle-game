@@ -268,6 +268,7 @@ namespace list {
                 int newDistance = shortestPaths[fromNode].getDistance() + edge->getWeight();
                 if (newDistance < shortestPaths[toNode].getDistance()){
                     int position = heap.search(toNode);
+                    cout<<toNode << " - " << position<<endl;
                     heap.update(position, newDistance);
                     shortestPaths[toNode].setDistance(newDistance);
                     shortestPaths[toNode].setPrevious(fromNode);
